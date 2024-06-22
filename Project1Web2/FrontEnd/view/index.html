@@ -119,7 +119,38 @@
                 .catch(function (error){
                     console.log('Error adding user:', error);
                 });
+
+        document.getElementById('updateUsersForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const Lastname = document.getElementById('Lastname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const address = document.getElementById('address').value;
+            const country = document.getElementById('country').value;
+            const state = document.getElementById('state').value;
+            const city = document.getElementById('city').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+
+            axios.update('http://localhost:3000/api/user/', { firstName, Lastname, email, password, address, country, state, city, phoneNumber}) //Validar si el usuario podría cambiar la contraseña
+                .then(function (response){
+                    // Limpiar campos del formulario
+                    document.getElementById('updateUsersForm').reset();
+                    // Redirigir a la página de login
+                    window.location.href = 'Login.html';
+                })
+                .catch(function (error){
+                    console.log('Error adding user:', error);
+                });
+
+
+    
+
         });
+
+
+
 
         window.onload = function() {
             fetchUsers();
