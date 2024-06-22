@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Careers</title>
+    <title>Aventones-Users</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -12,7 +12,6 @@
         <div id="users" class="mb-4"></div>
     </div>
 
-    
     <div class="container mt-5">
         <h2>Sign In</h2>
         <form id="addUsersForm" class="mb-4">
@@ -62,12 +61,11 @@
             Passwords do not match. Please try again.
         </div>
 
-
         <h2>Update User</h2>
         <form id="updateUsersForm" class="mb-4">
             <div class="form-group">
                 <label for="updateFirstName">First Name</label>
-                <input type="text" id="updatFirstName" class="form-control" placeholder="Enter new first name" required>
+                <input type="text" id="updateFirstName" class="form-control" placeholder="Enter new first name" required>
             </div>
             <div class="form-group">
                 <label for="updateLastname">Last Name</label>
@@ -79,7 +77,7 @@
             </div>
             <div class="form-group">
                 <label for="updatePassword">Password</label>
-                <input type="password" id="apdatePassword" class="form-control" placeholder="Enter new password" required>
+                <input type="password" id="updatePassword" class="form-control" placeholder="Enter new password" required>
             </div>
             <div class="form-group">
                 <label for="updateAddress">Address</label>
@@ -101,10 +99,18 @@
                 <label for="updatePhoneNumber">Phone Number</label>
                 <input type="number" id="updatePhoneNumber" class="form-control" placeholder="Enter new phone number" required>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">Update User</button>
         </form>
 
-    </div> 
+        <h2>Delete User</h2>
+        <form id="deleteUsersForm" class="mb-4">
+            <div class="form-group">
+                <label for="deleteId">Id User</label>
+                <input type="text" id="deleteId" class="form-control" placeholder="Enter user ID" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Delete User</button>
+        </form>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -129,7 +135,7 @@
                 });
         }
 
-        document.getElementById('addUsersForm').addEventListener('submit', function(e){
+        document.getElementById('addUsersForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const firstName = document.getElementById('firstName').value;
             const Lastname = document.getElementById('Lastname').value;
@@ -152,57 +158,56 @@
                 errorMessage.classList.add('d-none');
             }
 
-            axios.post('http://localhost:3000/api/user/', { firstName, Lastname, email, password, address, country, state, city, phoneNumber})
-                .then(function (response){
+            axios.post('http://localhost:3000/api/user/', { firstName, Lastname, email, password, address, country, state, city, phoneNumber })
+                .then(function (response) {
                     // Limpiar campos del formulario
                     document.getElementById('addUsersForm').reset();
                     // Redirigir a la página de login
                     window.location.href = 'Login.html';
                 })
-                .catch(function (error){
+                .catch(function (error) {
                     console.log('Error adding user:', error);
                 });
+        });
 
-        document.getElementById('updateUsersForm').addEventListener('submit', function(e){
+        document.getElementById('updateUsersForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const firstName = document.getElementById('firstName').value;
-            const Lastname = document.getElementById('Lastname').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const address = document.getElementById('address').value;
-            const country = document.getElementById('country').value;
-            const state = document.getElementById('state').value;
-            const city = document.getElementById('city').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
+            const firstName = document.getElementById('updateFirstName').value;
+            const Lastname = document.getElementById('updateLastname').value;
+            const email = document.getElementById('updateEmail').value;
+            const password = document.getElementById('updatePassword').value;
+            const address = document.getElementById('updateAddress').value;
+            const country = document.getElementById('updateCountry').value;
+            const state = document.getElementById('updateState').value;
+            const city = document.getElementById('updateCity').value;
+            const phoneNumber = document.getElementById('updatePhoneNumber').value;
 
-
-            axios.update('http://localhost:3000/api/user/', { firstName, Lastname, email, password, address, country, state, city, phoneNumber}) //Validar si el usuario podría cambiar la contraseña
-                .then(function (response){
+            axios.put('http://localhost:3000/api/user/', { firstName, Lastname, email, password, address, country, state, city, phoneNumber }) //Validar si el usuario podría cambiar la contraseña
+                .then(function (response) {
                     // Limpiar campos del formulario
                     document.getElementById('updateUsersForm').reset();
                     // Redirigir a la página de login
                     window.location.href = 'Login.html';
                 })
-                .catch(function (error){
-                    console.log('Error apdating user:', error);
+                .catch(function (error) {
+                    console.log('Error updating user:', error);
                 });
+        });
 
-        document.getElementById('deleteUserForm').addEventListener('submit', function(e){
+        document.getElementById('deleteUsersForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const id = document.getElementById('deleteid').value;
+            const id = document.getElementById('deleteId').value;
 
-            axios.delete('http://localhost:3000/api/user?id=${id}')
-                .then(function (response){
+            axios.delete(`http://localhost:3000/api/user?id=${id}`)
+                .then(function (response) {
                     // Limpiar campos del formulario
-                    fetchUsers()
+                    fetchUsers();
                     // Redirigir a la página de login
                     window.location.href = 'Login.html';
                 })
-                .catch(function (error){
+                .catch(function (error) {
                     console.log('Error deleting user:', error);
                 });
-
-
         });
 
         window.onload = function() {
@@ -211,3 +216,4 @@
     </script>
 </body>
 </html>
+
