@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aventones-Users</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -23,9 +23,6 @@
         <div id="error-message" class="alert alert-danger d-none" role="alert">
             Invalid email or password. Please try again.
         </div>
-        <div class="mt-4">
-            <p>If you want to register, click <a href="RegisterAsUser.html" class="btn btn-secondary">here</a></p>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -37,9 +34,15 @@
 
             axios.post('http://localhost:3000/api/login', { email, password })
                 .then(function(response) {
-                    const token = response.data.token;
-                    localStorage.setItem('token', token); // Guardar el token en el almacenamiento local
-                    window.location.href = 'first.html'; // Redirigir a la página protegida
+                    console.log(response.data); // Verifica la respuesta del servidor en la consola
+                    const userType = response.data.userType;
+                    if (userType === 'driver') {
+                        window.location.href = 'Booking.html'; // Redirigir a Booking.html para conductores
+                    } else if (userType === 'user') {
+                        window.location.href = 'MyRides.html'; // Redirigir a MyRides.html para usuarios
+                    } else {
+                        console.log('Unknown user type'); // Manejar otro caso si fuera necesario
+                    }
                 })
                 .catch(function(error) {
                     console.log('Error logging in:', error);
