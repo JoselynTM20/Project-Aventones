@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Driver</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Register as Driver</h2>
+        <form id="addDriverForm" class="mb-4">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" required>
+            </div>
+            <div class="form-group">
+                <label for="Lastname">Last Name</label>
+                <input type="text" id="Lastname" class="form-control" placeholder="Enter your last name" required>
+            </div>
+            <div class="form-group">
+                <label for="cardIdNumber">ID Number</label>
+                <input type="number" id="cardIdNumber" class="form-control" placeholder="Enter your ID number" required>
+            </div>
+            <div class="form-group">
+                <label for="BirthDate">BirthDate</label>
+                <input type="text" id="BirthDate" class="form-control" placeholder="Enter your Birth Date" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="repeatpassword">Repeat the Password</label>
+                <input type="password" id="repeatpassword" class="form-control" placeholder="Enter your password again" required>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="number" id="phoneNumber" class="form-control" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="carBrand">Car Brand</label>
+                <input type="text" id="carBrand" class="form-control" placeholder="Enter your car brand" required>
+            </div>
+            <div class="form-group">
+                <label for="carModel">Car Model</label>
+                <input type="text" id="carModel" class="form-control" placeholder="Enter your car model" required>
+            </div>
+            <div class="form-group">
+                <label for="carYear">Car Year</label>
+                <input type="number" id="carYear" class="form-control" placeholder="Enter your car year" required>
+            </div>
+            <div class="form-group">
+                <label for="licensePlate">License Plate</label>
+                <input type="text" id="licensePlate" class="form-control" placeholder="Enter your license plate" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <div id="error-message" class="alert alert-danger d-none" role="alert">
+            Passwords do not match. Please try again.
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.getElementById('addDriverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const Lastname = document.getElementById('Lastname').value;
+            const cardIdNumber = document.getElementById('cardIdNumber').value;
+            const BirthDate = document.getElementById('BirthDate').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const repeatpassword = document.getElementById('repeatpassword').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const carBrand = document.getElementById('carBrand').value;
+            const carModel = document.getElementById('carModel').value;
+            const carYear = document.getElementById('carYear').value;
+            const licensePlate = document.getElementById('licensePlate').value;
+
+            const errorMessage = document.getElementById('error-message');
+
+            if (password !== repeatpassword) {
+                console.log("no registrado");
+                errorMessage.classList.remove('d-none');
+                return;
+            } else {
+                errorMessage.classList.add('d-none');
+            }
+
+            axios.post('http://localhost:3000/api/driver/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber, carBrand, carModel, carYear, licensePlate })
+                .then(function (response) {
+                    // Limpiar campos del formulario
+                    document.getElementById('addDriverForm').reset();
+                    // Redirigir a la página de login
+                    window.location.href = 'Login.html';
+                })
+                .catch(function (error) {
+                    console.log('Error adding driver:', error);
+                });
+        });
+    </script>
+</body>
+</html>
