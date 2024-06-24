@@ -36,6 +36,9 @@ app.get("/api/driver/", DriverGet);
 app.post("/api/driver/", DriverPost);
 
 
+const { RidesDriverPost } = require('../Project1Web2/BackEend/controllers/ridesControllers');
+app.post("/api/rides", RidesDriverPost);
+
 // Iniciar el servidor
 const port = 3000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

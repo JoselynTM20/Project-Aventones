@@ -36,6 +36,13 @@
                 .then(function(response) {
                     console.log(response.data); // Verifica la respuesta del servidor en la consola
                     const userType = response.data.userType;
+                    const userId = response.data.userId; // Obtener el userId del servidor
+
+                    // Guardar el userType y userId en localStorage
+                    localStorage.setItem('userType', userType);
+                    localStorage.setItem('userId', userId);
+                    console.log(userId);
+
                     if (userType === 'driver') {
                         window.location.href = 'Booking.html'; // Redirigir a Booking.html para conductores
                     } else if (userType === 'user') {
@@ -52,4 +59,5 @@
     </script>
 </body>
 </html>
+
 

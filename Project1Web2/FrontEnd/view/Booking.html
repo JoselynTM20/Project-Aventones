@@ -1,30 +1,95 @@
+<!-- booking.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First Page</title>
+    <title>Booking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Welcome to the Booking</h1>
+    <div class="container mt-5">
+        <h2>New Ride</h2>
+        <form id="newRideForm">
+            <div class="form-group">
+                <label for="departureFrom">Departure From</label>
+                <input type="text" id="departureFrom" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="arriveTo">Arrive To</label>
+                <input type="text" id="arriveTo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="days">Days</label>
+                <select id="days" class="form-control" multiple required>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="time" id="time" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="seats">Seats</label>
+                <input type="number" id="seats" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="fee">Fee</label>
+                <input type="number" id="fee" class="form-control" required>
+            </div>
+            <h4>Vehicle Details</h4>
+            <div class="form-group">
+                <label for="make">Make</label>
+                <input type="text" id="make" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" id="model" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" id="year" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='Booking.html'">Cancel</button>
+        </form>
+        <div id="error-message" class="alert alert-danger d-none" role="alert">
+            Error creating ride. Please try again.
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'login.html'; // Redirigir al login si no hay token
-        } else {
-            axios.get('http://localhost:3000/api/user', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(function(response) {
-                console.log('Usuarios:', response.data);
-                // Aquí puedes manejar la lógica de tu página protegida
-            })
-            .catch(function(error) {
-                console.log('Error accediendo a la ruta protegida:', error);
-                window.location.href = 'login.html'; // Redirigir al login si el token no es válido
-            });
-        }
+        document.getElementById('newRideForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const departureFrom = document.getElementById('departureFrom').value;
+            const arriveTo = document.getElementById('arriveTo').value;
+            const days = Array.from(document.getElementById('days').selectedOptions).map(option => option.value);
+            const time = document.getElementById('time').value;
+            const seats = document.getElementById('seats').value;
+            const fee = document.getElementById('fee').value;
+            const vehicle = {
+                make: document.getElementById('make').value,
+                model: document.getElementById('model').value,
+                year: document.getElementById('year').value
+            };
+
+            axios.post('http://localhost:3000/api/rides', { departureFrom, arriveTo, days, time, seats, fee, vehicle, make, model, year })
+                .then(function(response) {
+                    window.location.href = 'Booking.html'; // Redirigir después de crear el ride
+                })
+                .catch(function(error) {
+                    console.log('Error creating ride:', error);
+                    document.getElementById('error-message').classList.remove('d-none');
+                });
+        });
     </script>
 </body>
 </html>
+
