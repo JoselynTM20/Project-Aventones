@@ -6,6 +6,8 @@ const cors = require("cors");
 const path = require('path');
 
 
+const { login } = require('../Project1Web2/BackEend/controllers/authControllers');
+
 app.use(bodyParser.json());
 app.use(cors({
     domains: '*',
@@ -14,7 +16,12 @@ app.use(cors({
 
 //para la conexion a bd
 //const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users");
-const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino15@cluster0.bzbj5gg.mongodb.net/users");
+const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino15@cluster0.bzbj5gg.mongodb.net/users", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+app.post("/api/login", login);
 
 const { UserPost, UserGet, UserPut, UserDelete } = require('../Project1Web2/BackEend/controllers/usersControllers');
 app.get("/api/user/", UserGet);
