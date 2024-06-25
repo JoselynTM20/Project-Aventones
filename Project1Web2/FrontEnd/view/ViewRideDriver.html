@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ride Drivers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Rides</h1>
+            <button class="btn btn-success" onclick="window.location.href='NewRideDriver.html'">New Ride</button>
+        </div>
+        <div id="ridesDriver" class="mb-4"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function fetchRidesDriver() {
+            axios.get('http://localhost:3000/api/rides/')
+                .then(function (response) {
+                    const rides = response.data;
+                    const lista = document.getElementById('ridesDriver');
+                    lista.innerHTML = '';
+                    rides.forEach(ride => {
+                        const item = document.createElement('div');
+                        item.className = 'alert alert-secondary';
+                        item.innerHTML = `
+                            <p>From: ${ride.departureFrom}</p>
+                            <p>To: ${ride.arriveTo}</p>
+                            <p>Seats: ${ride.seats}</p>
+                            <p>Vehicle:</p>
+                            <ul>
+                                <li>Make: ${ride.vehicle.make}</li>
+                                <li>Model: ${ride.vehicle.model}</li>
+                                <li>Year: ${ride.vehicle.year}</li>
+                            </ul>
+                            <p>Fee: ${ride.fee}</p>
+                            
+                           <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
+                            <button class="btn btn-primary" onclick="window.location.href='EditRidesDriver.html'">Edit</button>
+                        `;
+                        lista.appendChild(item);
+                    });
+                })
+                .catch(function (error) {
+                    console.log('Error fetching rides:', error);
+                });
+        }
+
+        /*function deleteRide(rideid) {
+            axios.delete(`http://localhost:3000/api/rides/${rideid}`)
+                .then(function (response) {
+                    console.log('Ride deleted:', response.data);
+                    alert('Ride deleted successfully');
+                    fetchRidesDriver(); // Volver a cargar los rides después de eliminar
+                })
+                .catch(function (error) {
+                    console.error('Error deleting ride:', error);
+                    alert('Failed to delete ride');
+                });
+        }*/
+
+
+
+        window.onload = function() {
+            fetchRidesDriver();
+        };
+    </script>
+</body>
+</html>
+
+

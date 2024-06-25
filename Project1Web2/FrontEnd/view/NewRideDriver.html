@@ -82,7 +82,7 @@
 
             axios.post('http://localhost:3000/api/rides', { departureFrom, arriveTo, days, time, seats, fee, vehicle, make, model, year })
                 .then(function(response) {
-                    window.location.href = 'Booking.html'; // Redirigir después de crear el ride
+                    window.location.href = 'ViewRideDriver.html'; // Redirigir después de crear el ride
                 })
                 .catch(function(error) {
                     console.log('Error creating ride:', error);
