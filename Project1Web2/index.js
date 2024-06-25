@@ -35,9 +35,11 @@ app.get("/api/driver/", DriverGet);
 app.post("/api/driver/", DriverPost);
 
 
-const { RidesDriverPost,  RidesDriverGet} = require('../Project1Web2/BackEend/controllers/ridesControllers');
+const { RidesDriverPost,  RidesDriverGet, updateRideDriver, deleteRide } = require('../Project1Web2/BackEend/controllers/ridesControllers');
 app.post("/api/rides", RidesDriverPost);
 app.get("/api/rides", RidesDriverGet);
+app.put("/api/rides/:id", updateRideDriver); // Nueva ruta PUT para actualizar rides
+app.delete("/api/rides/:id", deleteRide); // Nueva ruta DELETE para eliminar rides
 
 
 
