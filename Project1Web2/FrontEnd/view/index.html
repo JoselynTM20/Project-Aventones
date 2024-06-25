@@ -32,32 +32,31 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            axios.post('http://localhost:3000/api/login', { email, password })
+            axios.post('http://localhost:3001/api/login', { email, password })
                 .then(function(response) {
-                    console.log(response.data); // Verifica la respuesta del servidor en la consola
+                    console.log('Login response:', response.data); // Verifica la respuesta del servidor en la consola
                     const userType = response.data.userType;
-                    const userId = response.data.userId; // Obtener el userId del servidor
+                    const userId = response.data.userId;
 
                     // Guardar el userType y userId en localStorage
                     localStorage.setItem('userType', userType);
-                    localStorage.setItem('driverId', userId); // Corregido: 'driverId' en lugar de 'diverId'
-                    console.log(userId);
+                    localStorage.setItem('userId', userId);
 
                     if (userType === 'driver') {
-                        window.location.href = 'NewRideDriver.html'; // Redirigir a Booking.html para conductores
+                        window.location.href = 'ViewRideDriver.html'; // Redirigir a Booking.html para conductores
                     } else if (userType === 'user') {
                         window.location.href = 'MyRides.html'; // Redirigir a MyRides.html para usuarios
                     } else {
-                        console.log('Unknown user type'); // Manejar otro caso si fuera necesario
+                        console.log('Unknown user type');
                     }
                 })
                 .catch(function(error) {
-                    console.log('Error logging in:', error);
+                    console.log('Error logging in:', error); // Verifica cualquier error en la consola
                     document.getElementById('error-message').classList.remove('d-none');
                 });
+
         });
     </script>
 </body>
 </html>
-
 

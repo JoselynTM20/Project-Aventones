@@ -21,7 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function fetchRidesDriver() {
-            axios.get('http://localhost:3000/api/rides/')
+            axios.get('http://localhost:3001/api/rides/')
                 .then(function (response) {
                     const rides = response.data;
                     const lista = document.getElementById('ridesDriver');
@@ -41,7 +41,7 @@
                             </ul>
                             <p>Fee: ${ride.fee}</p>
                             
-                           <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
+                           <button class="btn btn-primary" onclick="window.location.href='MyRides.html'">Delete</button>
                             <button class="btn btn-primary" onclick="window.location.href='EditRidesDriver.html'">Edit</button>
                         `;
                         lista.appendChild(item);
@@ -52,18 +52,6 @@
                 });
         }
 
-        /*function deleteRide(rideid) {
-            axios.delete(`http://localhost:3000/api/rides/${rideid}`)
-                .then(function (response) {
-                    console.log('Ride deleted:', response.data);
-                    alert('Ride deleted successfully');
-                    fetchRidesDriver(); // Volver a cargar los rides después de eliminar
-                })
-                .catch(function (error) {
-                    console.error('Error deleting ride:', error);
-                    alert('Failed to delete ride');
-                });
-        }*/
 
 
 

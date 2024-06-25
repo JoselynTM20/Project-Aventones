@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking</title>
+    <title>New Ride Driver</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -80,14 +80,26 @@
                 year: document.getElementById('year').value
             };
 
-            axios.post('http://localhost:3000/api/rides', { departureFrom, arriveTo, days, time, seats, fee, vehicle, make, model, year })
-                .then(function(response) {
-                    window.location.href = 'ViewRideDriver.html'; // Redirigir después de crear el ride
-                })
-                .catch(function(error) {
-                    console.log('Error creating ride:', error);
-                    document.getElementById('error-message').classList.remove('d-none');
-                });
+            // Obtener el userId del localStorage
+            const userId = localStorage.getItem('userId');
+
+            axios.post('http://localhost:3001/api/rides', { 
+                departureFrom, 
+                arriveTo, 
+                days, 
+                time, 
+                seats, 
+                fee, 
+                vehicle,
+                userId  // Incluir el userId en los datos enviados al backend
+            })
+            .then(function(response) {
+                window.location.href = 'ViewRideDriver.html'; // Redirigir después de crear el ride
+            })
+            .catch(function(error) {
+                console.log('Error creating ride:', error);
+                document.getElementById('error-message').classList.remove('d-none');
+            });
         });
     </script>
 </body>
