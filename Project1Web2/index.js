@@ -16,11 +16,11 @@ app.use(cors({
 }));
 
 //para la conexion a bd
-//const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users");
-const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino15@cluster0.bzbj5gg.mongodb.net/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", );
+//const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino15@cluster0.bzbj5gg.mongodb.net/users", {
+//});
+
+
 
 app.post("/api/login", login);
 

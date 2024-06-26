@@ -60,7 +60,7 @@
     
     <script>
         function fetchUsers() {
-            axios.get('http://localhost:3000/api/user/')
+            axios.get('http://localhost:3001/api/user/')
                 .then(function (response) {
                     const users = response.data;
                     const lista = document.getElementById('users');
@@ -98,7 +98,7 @@
                 errorMessage.classList.add('d-none');
             }
 
-            axios.post('http://localhost:3000/api/user/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber })
+            axios.post('http://localhost:3001/api/user/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber })
                 .then(function (response) {
                     // Limpiar campos del formulario
                     document.getElementById('addUsersForm').reset();

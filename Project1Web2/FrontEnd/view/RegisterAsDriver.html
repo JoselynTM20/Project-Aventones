@@ -96,7 +96,7 @@
                 errorMessage.classList.add('d-none');
             }
 
-            axios.post('http://localhost:3000/api/driver/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber, carBrand, carModel, carYear, licensePlate })
+            axios.post('http://localhost:3001/api/driver/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber, carBrand, carModel, carYear, licensePlate })
                 .then(function (response) {
                     // Limpiar campos del formulario
                     document.getElementById('addDriverForm').reset();
