@@ -6,7 +6,7 @@ const cors = require("cors");
 const path = require('path');
 
 
-const { login } = require('../Project1Web2/BackEend/controllers/authControllers');
+const { login } = require('./BackEend/controllers/AuthControllers');
 
 
 app.use(bodyParser.json());
@@ -24,18 +24,18 @@ const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongo
 
 app.post("/api/login", login);
 
-const { UserPost, UserGet} = require('../Project1Web2/BackEend/controllers/usersControllers');
+const { UserPost, UserGet} = require('./BackEend/controllers/UsersControllers');
 app.get("/api/user/", UserGet);
 app.post("/api/user/",  UserPost);
 
 
-const { DriverPost, DriverGet } = require('../Project1Web2/BackEend/controllers/driversControllers');
+const { DriverPost, DriverGet } = require('./BackEend/controllers/DriversControllers');
 // Rutas para conductores
 app.get("/api/driver/", DriverGet);
 app.post("/api/driver/", DriverPost);
 
 
-const { RidesDriverPost,  RidesDriverGet, updateRideDriver, deleteRide } = require('../Project1Web2/BackEend/controllers/ridesControllers');
+const { RidesDriverPost,  RidesDriverGet, updateRideDriver, deleteRide } = require('./BackEend/controllers/RidesControllers');
 app.post("/api/rides", RidesDriverPost);
 app.get("/api/rides", RidesDriverGet);
 app.put("/api/rides/:id", updateRideDriver); // Nueva ruta PUT para actualizar rides
