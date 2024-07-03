@@ -29,7 +29,11 @@
 
         // Cargar datos del ride para prellenar el formulario de edición
         function loadRideData() {
-            axios.get(`http://localhost:3001/api/rides/${rideId}`)
+            axios.get(`http://localhost:3001/api/rides/${rideId}` , {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(function(response) {
                     const ride = response.data;
                     // Preencher los campos del formulario con los datos del ride
@@ -70,7 +74,11 @@
             };
 
             // Enviar la solicitud PUT para actualizar el ride
-            axios.put(`http://localhost:3001/api/rides/${rideId}`, updatedRide)
+            axios.put(`http://localhost:3001/api/rides/${rideId}`, updatedRide , {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(function(response) {
                     console.log('Ride updated:', response.data);
                     window.location.href = 'ViewRideDriver.html'; // Redirigir después de actualizar el ride

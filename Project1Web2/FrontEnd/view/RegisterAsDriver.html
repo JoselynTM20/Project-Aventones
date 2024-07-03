@@ -23,7 +23,7 @@
                 <input type="number" id="cardIdNumber" class="form-control" placeholder="Enter your ID number" required>
             </div>
             <div class="form-group">
-                <label for="BirthDate">BirthDate</label>
+                <label for="BirthDate">Birth Date</label>
                 <input type="text" id="BirthDate" class="form-control" placeholder="Enter your Birth Date" required>
             </div>
             <div class="form-group">
@@ -89,23 +89,41 @@
             const errorMessage = document.getElementById('error-message');
 
             if (password !== repeatpassword) {
-                console.log("no registrado");
                 errorMessage.classList.remove('d-none');
                 return;
             } else {
                 errorMessage.classList.add('d-none');
             }
 
-            axios.post('http://localhost:3001/api/driver/', { firstName, Lastname, cardIdNumber, BirthDate, email, password, phoneNumber, carBrand, carModel, carYear, licensePlate })
-                .then(function (response) {
-                    // Limpiar campos del formulario
-                    document.getElementById('addDriverForm').reset();
-                    // Redirigir a la página de login
-                    window.location.href = 'index.html';
-                })
-                .catch(function (error) {
-                    console.log('Error adding driver:', error);
-                });
+              // Obtener el token JWT del almacenamiento local
+              const token = localStorage.getItem('token');
+
+            axios.post('http://localhost:3001/api/driver/', { 
+                firstName, 
+                Lastname, 
+                cardIdNumber, 
+                BirthDate, 
+                email, 
+                password, 
+                phoneNumber, 
+                carBrand, 
+                carModel, 
+                carYear, 
+                licensePlate 
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function (response) {
+                // Limpiar campos del formulario
+                document.getElementById('addDriverForm').reset();
+                // Redirigir a la página de login
+                window.location.href = 'index.html';
+            })
+            .catch(function (error) {
+                console.log('Error adding driver:', error);
+            });
         });
     </script>
 </body>

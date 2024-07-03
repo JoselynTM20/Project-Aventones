@@ -1,51 +1,41 @@
 const express = require('express');
 const app = express();
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-
-
-
+// Importar middleware de autenticación
+const { authenticateToken } = require('./BackEend/middleware/authMiddleware');
 const { login } = require('./BackEend/controllers/AuthControllers');
 
+const { UserGet, UserPost } = require('./BackEend/controllers/UsersControllers');
+const { DriverPost, DriverGet } = require('./BackEend/controllers/DriversControllers');
+const { RidesDriverPost, RidesDriverGet, updateRide, deleteRide } = require('./BackEend/controllers/RidesControllers');
 
 app.use(bodyParser.json());
 app.use(cors({
     domains: '*',
-    methods: "*"
+    methods: '*'
 }));
 
-//para la conexion a bd
-//const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", );
-const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net");
+// Para la conexión a la base de datos
+mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net")
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log('MongoDB connection error:', err));
 
+// Rutas
+app.post('/api/login', login);
 
+app.get('/api/user', authenticateToken, UserGet);
+app.post('/api/user', authenticateToken, UserPost);
 
+app.get('/api/driver', authenticateToken, DriverGet);
+app.post('/api/driver', authenticateToken, DriverPost);
 
-app.post("/api/login", login);
-
-const { UserPost, UserGet} = require('./BackEend/controllers/UsersControllers');
-app.get("/api/user/", UserGet);
-app.post("/api/user/",  UserPost);
-
-
-const { DriverPost, DriverGet } = require('./BackEend/controllers/DriversControllers');
-// Rutas para conductores
-app.get("/api/driver/", DriverGet);
-app.post("/api/driver/", DriverPost);
-
-
-const { RidesDriverPost,  RidesDriverGet, updateRide, deleteRide } = require('./BackEend/controllers/RidesControllers');
-app.post("/api/rides", RidesDriverPost);
-app.get("/api/rides", RidesDriverGet);
-app.put("/api/rides/:id", updateRide); // Nueva ruta PUT para actualizar rides
-app.delete("/api/rides/:id", deleteRide); // Nueva ruta DELETE para eliminar rides
-
-
-
-
+app.get('/api/rides', authenticateToken, RidesDriverGet);
+app.post('/api/rides', authenticateToken, RidesDriverPost);
+app.put('/api/rides/:id', authenticateToken, updateRide);
+app.delete('/api/rides/:id', authenticateToken, deleteRide);
 
 // Iniciar el servidor
 const port = 3001;

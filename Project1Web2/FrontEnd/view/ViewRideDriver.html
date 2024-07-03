@@ -22,58 +22,76 @@
     <script>
         function fetchRidesDriver() {
             const userId = localStorage.getItem('userId'); // Obtener el userId del almacenamiento local
-            axios.get(`http://localhost:3001/api/rides?userId=${userId}`)
-                .then(function (response) {
-                    const rides = response.data;
-                    const lista = document.getElementById('ridesDriver');
-                    lista.innerHTML = '';
-                    rides.forEach(ride => {
-                        const item = document.createElement('div');
-                        item.className = 'alert alert-secondary';
-                        item.innerHTML = `
-                            <p>From: ${ride.departureFrom}</p>
-                            <p>To: ${ride.arriveTo}</p>
-                            <p>Seats: ${ride.seats}</p>
-                            <p>Vehicle:</p>
-                            <ul>
-                                <li>Make: ${ride.vehicle.make}</li>
-                                <li>Model: ${ride.vehicle.model}</li>
-                                <li>Year: ${ride.vehicle.year}</li>
-                            </ul>
-                            <p>Fee: ${ride.fee}</p>
-                            <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
-                            <button class="btn btn-primary" onclick="editRide('${ride._id}')">Edit</button>
-                        `;
-                        lista.appendChild(item);
-                    });
-                })
-                .catch(function (error) {
-                    console.log('Error fetching rides:', error);
+            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+            
+            axios.get(`http://localhost:3001/api/rides?userId=${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function (response) {
+                const rides = response.data;
+                const lista = document.getElementById('ridesDriver');
+                lista.innerHTML = '';
+                rides.forEach(ride => {
+                    const item = document.createElement('div');
+                    item.className = 'alert alert-secondary';
+                    item.innerHTML = `
+                        <p>From: ${ride.departureFrom}</p>
+                        <p>To: ${ride.arriveTo}</p>
+                        <p>Seats: ${ride.seats}</p>
+                        <p>Vehicle:</p>
+                        <ul>
+                            <li>Make: ${ride.vehicle.make}</li>
+                            <li>Model: ${ride.vehicle.model}</li>
+                            <li>Year: ${ride.vehicle.year}</li>
+                        </ul>
+                        <p>Fee: ${ride.fee}</p>
+                        <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
+                        <button class="btn btn-primary" onclick="editRide('${ride._id}')">Edit</button>
+                    `;
+                    lista.appendChild(item);
                 });
+            })
+            .catch(function (error) {
+                console.log('Error fetching rides:', error);
+            });
         }
 
         function deleteRide(rideId) {
-            axios.delete(`http://localhost:3001/api/rides/${rideId}`)
-                .then(function (response) {
-                    console.log('Ride deleted successfully');
-                    // Actualizar la lista de rides después de eliminar
-                    fetchRidesDriver();
-                })
-                .catch(function (error) {
-                    console.log('Error deleting ride:', error);
-                });
+            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
+            axios.delete(`http://localhost:3001/api/rides/${rideId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function (response) {
+                console.log('Ride deleted successfully');
+                // Actualizar la lista de rides después de eliminar
+                fetchRidesDriver();
+            })
+            .catch(function (error) {
+                console.log('Error deleting ride:', error);
+            });
         }
 
         function editRide(rideId) {
-            axios.get(`http://localhost:3001/api/rides/${rideId}`)
-                .then(function(response) {
-                    currentRideData = response.data; // Guardar datos del ride en la variable global
-                    console.log('Current ride data:', currentRideData);
-                    // Aquí podrías redirigir a EditRidesDriver.html si lo deseas
-                })
-                .catch(function(error) {
-                    console.log('Error fetching ride data:', error);
-                });
+            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+
+            axios.get(`http://localhost:3001/api/rides/${rideId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function(response) {
+                currentRideData = response.data; // Guardar datos del ride en la variable global
+                console.log('Current ride data:', currentRideData);
+                // Aquí podrías redirigir a EditRidesDriver.html si lo deseas
+            })
+            .catch(function(error) {
+                console.log('Error fetching ride data:', error);
+            });
         }
 
         window.onload = function() {
@@ -82,4 +100,3 @@
     </script>
 </body>
 </html>
-

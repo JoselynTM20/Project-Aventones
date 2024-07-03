@@ -22,6 +22,10 @@
             <div id="error-message" class="alert alert-danger d-none mt-3" role="alert">
                 Error logging in. Please try again.
             </div>
+            <div class="mt-4">
+                <p>Not an user?<a href="RegisterAsUser.html" class=""> Register Now</a></p>
+                
+            </div>
         </form>
     </div>
 
@@ -35,12 +39,12 @@
             axios.post('http://localhost:3001/api/login', { email, password })
                 .then(function(response) {
                     console.log('Login response:', response.data); // Verifica la respuesta del servidor en la consola
-                    const userType = response.data.userType;
-                    const userId = response.data.userId;
-
-                    // Guardar el userType y userId en localStorage
+                    const { userType, userId, token } = response.data;
+                    
+                    // Guardar el userType, userId y token en localStorage
                     localStorage.setItem('userType', userType);
                     localStorage.setItem('userId', userId);
+                    localStorage.setItem('token', token);
 
                     if (userType === 'driver') {
                         window.location.href = 'ViewRideDriver.html'; // Redirigir a Booking.html para conductores
@@ -54,9 +58,7 @@
                     console.log('Error logging in:', error); // Verifica cualquier error en la consola
                     document.getElementById('error-message').classList.remove('d-none');
                 });
-
         });
     </script>
 </body>
 </html>
-
