@@ -9,7 +9,7 @@ const { authenticateToken } = require('./BackEend/middleware/authMiddleware');
 const { login } = require('./BackEend/controllers/AuthControllers');
 
 const { UserGet, UserPost } = require('./BackEend/controllers/UsersControllers');
-const { DriverPost, DriverGet } = require('./BackEend/controllers/DriversControllers');
+const { DriverPost, DriverGet } = require('./BackEend/controllers/driversControllers');
 const { RidesDriverPost, RidesDriverGet, updateRide, deleteRide } = require('./BackEend/controllers/RidesControllers');
 
 app.use(bodyParser.json());
@@ -19,7 +19,10 @@ app.use(cors({
 }));
 
 // Para la conexión a la base de datos
-mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net")
+mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
 

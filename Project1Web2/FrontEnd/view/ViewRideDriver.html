@@ -77,21 +77,7 @@
         }
 
         function editRide(rideId) {
-            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
-
-            axios.get(`http://localhost:3001/api/rides/${rideId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function(response) {
-                currentRideData = response.data; // Guardar datos del ride en la variable global
-                console.log('Current ride data:', currentRideData);
-                // Aquí podrías redirigir a EditRidesDriver.html si lo deseas
-            })
-            .catch(function(error) {
-                console.log('Error fetching ride data:', error);
-            });
+            window.location.href = `EditRidesDriver.html?id=${rideId}`;
         }
 
         window.onload = function() {
