@@ -42,7 +42,7 @@
                             </ul>
                             <p>Fee: ${ride.fee}</p>
                             <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
-                            <button class="btn btn-primary" onclick="window.location.href='EditRidesDriver.html'">Edit</button>
+                            <button class="btn btn-primary" onclick="editRide('${ride._id}')">Edit</button>
                         `;
                         lista.appendChild(item);
                     });
@@ -61,6 +61,18 @@
                 })
                 .catch(function (error) {
                     console.log('Error deleting ride:', error);
+                });
+        }
+
+        function editRide(rideId) {
+            axios.get(`http://localhost:3001/api/rides/${rideId}`)
+                .then(function(response) {
+                    currentRideData = response.data; // Guardar datos del ride en la variable global
+                    console.log('Current ride data:', currentRideData);
+                    // Aquí podrías redirigir a EditRidesDriver.html si lo deseas
+                })
+                .catch(function(error) {
+                    console.log('Error fetching ride data:', error);
                 });
         }
 

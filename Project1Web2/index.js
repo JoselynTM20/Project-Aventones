@@ -37,10 +37,10 @@ app.get("/api/driver/", DriverGet);
 app.post("/api/driver/", DriverPost);
 
 
-const { RidesDriverPost,  RidesDriverGet, updateRideDriver, deleteRide } = require('./BackEend/controllers/RidesControllers');
+const { RidesDriverPost,  RidesDriverGet, updateRide, deleteRide } = require('./BackEend/controllers/RidesControllers');
 app.post("/api/rides", RidesDriverPost);
 app.get("/api/rides", RidesDriverGet);
-app.put("/api/rides/:id", updateRideDriver); // Nueva ruta PUT para actualizar rides
+app.put("/api/rides/:id", updateRide); // Nueva ruta PUT para actualizar rides
 app.delete("/api/rides/:id", deleteRide); // Nueva ruta DELETE para eliminar rides
 
 

@@ -1,3 +1,5 @@
+<!-- editRidesDriver.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,51 +12,8 @@
     <div class="container mt-5">
         <h2>Edit Ride</h2>
         <form id="editRideForm">
-            <div class="form-group">
-                <label for="departureFrom">Departure From</label>
-                <input type="text" id="departureFrom" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="arriveTo">Arrive To</label>
-                <input type="text" id="arriveTo" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="days">Days</label>
-                <select id="days" class="form-control" multiple required>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="time">Time</label>
-                <input type="time" id="time" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="seats">Seats</label>
-                <input type="number" id="seats" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="fee">Fee</label>
-                <input type="number" id="fee" class="form-control" required>
-            </div>
-            <h4>Vehicle Details</h4>
-            <div class="form-group">
-                <label for="make">Make</label>
-                <input type="text" id="make" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="model">Model</label>
-                <input type="text" id="model" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="year">Year</label>
-                <input type="number" id="year" class="form-control" required>
-            </div>
+            <!-- Campos del formulario para editar -->
+            <!-- Aquí incluir los campos para editar como en tu formulario actual -->
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
         <div id="error-message" class="alert alert-danger d-none" role="alert">
@@ -64,7 +23,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        // Obtener el ID del ride desde la URL
+        // Obtener el ID del ride desde la URL (ej. con URLSearchParams)
         const urlParams = new URLSearchParams(window.location.search);
         const rideId = urlParams.get('id');
 
@@ -73,6 +32,7 @@
             axios.get(`http://localhost:3001/api/rides/${rideId}`)
                 .then(function(response) {
                     const ride = response.data;
+                    // Preencher los campos del formulario con los datos del ride
                     document.getElementById('departureFrom').value = ride.departureFrom;
                     document.getElementById('arriveTo').value = ride.arriveTo;
                     document.getElementById('time').value = ride.time;
@@ -81,12 +41,6 @@
                     document.getElementById('make').value = ride.vehicle.make;
                     document.getElementById('model').value = ride.vehicle.model;
                     document.getElementById('year').value = ride.vehicle.year;
-
-                    // Seleccionar los días en el select múltiple
-                    const daysSelect = document.getElementById('days');
-                    Array.from(daysSelect.options).forEach(option => {
-                        option.selected = ride.days.includes(option.value);
-                    });
                 })
                 .catch(function(error) {
                     console.log('Error fetching ride data:', error);
@@ -98,21 +52,28 @@
             e.preventDefault();
             const departureFrom = document.getElementById('departureFrom').value;
             const arriveTo = document.getElementById('arriveTo').value;
-            const days = Array.from(document.getElementById('days').selectedOptions).map(option => option.value);
             const time = document.getElementById('time').value;
             const seats = document.getElementById('seats').value;
             const fee = document.getElementById('fee').value;
-            const vehicle = {
-                make: document.getElementById('make').value,
-                model: document.getElementById('model').value,
-                year: document.getElementById('year').value
+            const make = document.getElementById('make').value;
+            const model = document.getElementById('model').value;
+            const year = document.getElementById('year').value;
+
+            // Construir el objeto de datos a enviar para la actualización
+            const updatedRide = {
+                departureFrom,
+                arriveTo,
+                time,
+                seats: parseInt(seats),
+                fee: parseFloat(fee),
+                vehicle: { make, model, year }
             };
 
-            // Enviar los datos actualizados mediante una solicitud PUT
-            axios.put(`http://localhost:3000/api/rides/${rideId}`, { departureFrom, arriveTo, days, time, seats, fee, vehicle })
+            // Enviar la solicitud PUT para actualizar el ride
+            axios.put(`http://localhost:3001/api/rides/${rideId}`, updatedRide)
                 .then(function(response) {
                     console.log('Ride updated:', response.data);
-                    window.location.href = 'Booking.html'; // Redirigir después de actualizar el ride
+                    window.location.href = 'ViewRideDriver.html'; // Redirigir después de actualizar el ride
                 })
                 .catch(function(error) {
                     console.log('Error updating ride:', error);
