@@ -21,7 +21,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function fetchRidesDriver() {
-            axios.get('http://localhost:3001/api/rides/')
+            const userId = localStorage.getItem('userId'); // Obtener el userId del almacenamiento local
+            axios.get(`http://localhost:3001/api/rides?userId=${userId}`)
                 .then(function (response) {
                     const rides = response.data;
                     const lista = document.getElementById('ridesDriver');
@@ -40,8 +41,7 @@
                                 <li>Year: ${ride.vehicle.year}</li>
                             </ul>
                             <p>Fee: ${ride.fee}</p>
-                            
-                           <button class="btn btn-primary" onclick="window.location.href='MyRides.html'">Delete</button>
+                            <button class="btn btn-primary" onclick="window.location.href='MyRides.html'">Delete</button>
                             <button class="btn btn-primary" onclick="window.location.href='EditRidesDriver.html'">Edit</button>
                         `;
                         lista.appendChild(item);
@@ -52,14 +52,10 @@
                 });
         }
 
-
-
-
         window.onload = function() {
             fetchRidesDriver();
         };
     </script>
 </body>
 </html>
-
 

@@ -6,6 +6,8 @@ const cors = require("cors");
 const path = require('path');
 
 
+
+
 const { login } = require('./BackEend/controllers/AuthControllers');
 
 
@@ -16,9 +18,9 @@ app.use(cors({
 }));
 
 //para la conexion a bd
-const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", );
-//const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino15@cluster0.bzbj5gg.mongodb.net/users", {
-//});
+//const db = mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", );
+const db = mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net");
+
 
 
 
