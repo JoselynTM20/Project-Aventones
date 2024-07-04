@@ -10,7 +10,10 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Rides</h1>
-            <button class="btn btn-success" onclick="window.location.href='NewRideDriver.html'">New Ride</button>
+            <div>
+                <button class="btn btn-success mr-2" onclick="window.location.href='NewRideDriver.html'">New Ride</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
         </div>
         <div id="ridesDriver" class="mb-4"></div>
     </div>
@@ -78,6 +81,13 @@
 
         function editRide(rideId) {
             window.location.href = `EditRidesDriver.html?id=${rideId}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('token');
+            window.location.href = 'index.html'; // Redirigir al inicio después del logout
         }
 
         window.onload = function() {
