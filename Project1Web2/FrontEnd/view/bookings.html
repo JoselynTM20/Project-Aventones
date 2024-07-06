@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Bookings</h2>
+        <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+        <div id="bookings-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Ride</th>
+                        <th>Accept / Reject</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-table">
+                    <!-- Los bookings se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token'); // Obtener token JWT
+
+            if (!token) {
+                window.location.href = 'login.html'; // Redirigir al login si no está autenticado
+                return;
+            }
+
+            axios.get('http://localhost:3001/api/bookings', {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Incluir token JWT en el header
+                }
+            })
+            .then(function (response) {
+                const bookings = response.data;
+                const bookingsTable = document.getElementById('bookings-table');
+                bookingsTable.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
+                bookings.forEach(booking => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${booking.userId}</td>
+                        <td>${booking.rideId}</td>
+                        <td>
+                            <a href="#" class="accept-link" data-id="${booking._id}">Accept</a> |
+                            <a href="#" class="reject-link" data-id="${booking._id}">Reject</a>
+                        </td>
+                    `;
+                    bookingsTable.appendChild(row);
+                });
+
+                // Agregar manejadores de eventos para aceptar/rechazar reservas
+                document.querySelectorAll('.accept-link').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        updateBookingStatus(event.target.dataset.id, 'accepted');
+                    });
+                });
+
+                document.querySelectorAll('.reject-link').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        updateBookingStatus(event.target.dataset.id, 'rejected');
+                    });
+                });
+            })
+            .catch(function (error) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Error fetching bookings. Please try again later.';
+                errorMessage.classList.remove('d-none');
+                console.error('Error fetching bookings:', error);
+            });
+        });
+
+        function updateBookingStatus(bookingId, status) {
+            const token = localStorage.getItem('token');
+
+            axios.patch(`http://localhost:3001/api/bookings/${bookingId}`, {
+                status: status
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function (response) {
+                location.reload(); // Recargar la página después de actualizar el estado
+            })
+            .catch(function (error) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = `Error updating booking. Please try again later.`;
+                errorMessage.classList.remove('d-none');
+                console.error('Error updating booking:', error);
+            });
+        }
+    </script>
+</body>
+</html>
