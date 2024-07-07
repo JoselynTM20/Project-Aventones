@@ -122,6 +122,12 @@
             // Obtener el token del localStorage
             const token = localStorage.getItem('token');
 
+             // Preparar los parámetros de búsqueda
+            const params = {};
+            if (departureFrom) params.departureFrom = departureFrom;
+            if (arriveTo) params.arriveTo = arriveTo;
+            if (days.length > 0) params.days = days.join(',');
+
             axios.get('http://localhost:3001/api/rides', {
                 params: { departureFrom, arriveTo, days },
                 headers: {

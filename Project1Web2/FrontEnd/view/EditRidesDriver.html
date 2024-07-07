@@ -59,7 +59,7 @@
         const rideId = urlParams.get('id');
 
         // Cargar datos del ride para prellenar el formulario de edición
-        function loadRideData() {
+        function  loadRideData() {
             axios.get(`http://localhost:3001/api/rides/${rideId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

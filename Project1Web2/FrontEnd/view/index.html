@@ -47,9 +47,9 @@
                     localStorage.setItem('token', token);
 
                     if (userType === 'driver') {
-                        window.location.href = 'ViewRideDriver.html'; // Redirigir a Booking.html para conductores
+                        window.location.href = 'ViewRideDriver.html'; // Redirigir a Conductores.html para conductores
                     } else if (userType === 'user') {
-                        window.location.href = 'bookings.html'; // Redirigir a MyRides.html para usuarios
+                        window.location.href = 'SearchRides.html'; // Redirigir a SeachRides.html para usuarios
                     } else {
                         console.log('Unknown user type');
                     }
