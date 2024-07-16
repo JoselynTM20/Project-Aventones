@@ -19,16 +19,35 @@
                 <input type="text" id="arriveTo" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="days">Days</label>
-                <select id="days" class="form-control" multiple required>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                </select>
+                <label>Días</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="mondayCheckbox" value="Monday">
+                    <label class="form-check-label" for="mondayCheckbox">Monday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tuesdayCheckbox" value="Tuesday">
+                    <label class="form-check-label" for="tuesdayCheckbox">Tuesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="wednesdayCheckbox" value="Wednesday">
+                    <label class="form-check-label" for="wednesdayCheckbox">Wednesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="thursdayCheckbox" value="Thursday">
+                    <label class="form-check-label" for="thursdayCheckbox">Thursday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fridayCheckbox" value="Friday">
+                    <label class="form-check-label" for="fridayCheckbox">Friday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="saturdayCheckbox" value="Saturday">
+                    <label class="form-check-label" for="saturdayCheckbox">Saturday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="sundayCheckbox" value="Sunday">
+                    <label class="form-check-label" for="sundayCheckbox">Sunday</label>
+                </div>
             </div>
             <div class="form-group">
                 <label for="time">Time</label>
@@ -69,7 +88,14 @@
             e.preventDefault();
             const departureFrom = document.getElementById('departureFrom').value;
             const arriveTo = document.getElementById('arriveTo').value;
-            const days = Array.from(document.getElementById('days').selectedOptions).map(option => option.value);
+            const days = [];
+            if (document.getElementById('mondayCheckbox').checked) days.push('Monday');
+            if (document.getElementById('tuesdayCheckbox').checked) days.push('Tuesday');
+            if (document.getElementById('wednesdayCheckbox').checked) days.push('Wednesday');
+            if (document.getElementById('thursdayCheckbox').checked) days.push('Thursday');
+            if (document.getElementById('fridayCheckbox').checked) days.push('Friday');
+            if (document.getElementById('saturdayCheckbox').checked) days.push('Saturday');
+            if (document.getElementById('sundayCheckbox').checked) days.push('Sunday');
             const time = document.getElementById('time').value;
             const seats = document.getElementById('seats').value;
             const fee = document.getElementById('fee').value;

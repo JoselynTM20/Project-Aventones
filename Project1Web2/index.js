@@ -10,7 +10,7 @@ const { login } = require('./BackEend/controllers/authControllers');
 
 const { UserGet, UserPost } = require('./BackEend/controllers/usersControllers');
 const { DriverPost, DriverGet } = require('./BackEend/controllers/driversControllers');
-const { RidesDriverPost, RidesDriverGet, updateRideDriver, deleteRide, getRidesByDriver } = require('./BackEend/controllers/ridesControllers');
+const { RidesDriverPost, RidesDriverGet, updateRideDriver, deleteRide, getRidesByDriver, RidesDriverGetById } = require('./BackEend/controllers/ridesControllers');
 const { BookingPost, BookingGet, UpdateBooking, DeleteBooking } = require('./BackEend/controllers/BookingsControllers');
 
 app.use(bodyParser.json());
@@ -49,7 +49,7 @@ app.post('/api/rides', authenticateToken, RidesDriverPost);
 app.put('/api/rides/:id', authenticateToken, updateRideDriver);
 app.delete('/api/rides/:id', authenticateToken, deleteRide);
 app.delete('/api/rides/:id', authenticateToken, getRidesByDriver);
-
+app.get('/api/rides/:id', authenticateToken, RidesDriverGetById);
 
 
 app.get('/api/bookings', authenticateToken, BookingGet);
