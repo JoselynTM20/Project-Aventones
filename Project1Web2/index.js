@@ -48,7 +48,7 @@ app.get('/api/rides', authenticateToken, RidesDriverGet);
 app.post('/api/rides', authenticateToken, RidesDriverPost);
 app.put('/api/rides/:id', authenticateToken, updateRideDriver);
 app.delete('/api/rides/:id', authenticateToken, deleteRide);
-app.delete('/api/rides/:id', authenticateToken, getRidesByDriver);
+app.delete('/api/rides/driver/:id', authenticateToken, getRidesByDriver);
 app.get('/api/rides/:id', authenticateToken, RidesDriverGetById);
 
 
