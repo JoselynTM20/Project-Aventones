@@ -5,13 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Ride Drivers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-   
-    <link rel="stylesheet" href="../style/style.css"> <!-- Ruta ajustada para style.css -->
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Estilos adicionales específicos para esta página si los necesitas -->
+
+    
 </head>
 <body>
-    <iframe src="header.html" frameborder="0" style="width: 100%; height: 100px;"></iframe>
-    <div class="container mt-5">
+    <div class="header">
+        <div class="container">
+            <h2 class="text-center">Aventones <i class="fa fa-car"></i></h2>
+            <div class="float-left">
+                <a href="#" class="mr-3">Home</a>
+                <a href="ViewRideDriver.html" class="mr-3">Rides</a>
+                <a href="bookings.html">Booking</a>
+            </div>
+            <div class="float-right">
+                <i class="fa fa-user-circle-o fa-lg"></i>
+            </div>
+        </div>
+    </div>
 
+    <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Rides</h1>
             <div>
@@ -28,8 +44,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function fetchRidesDriver() {
-            const userId = localStorage.getItem('userId'); // Obtener el userId del almacenamiento local
-            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+            const userId = localStorage.getItem('userId');
+            const token = localStorage.getItem('token');
             
             axios.get(`http://localhost:3001/api/rides?userId=${userId}`, {
                 headers: {
@@ -67,7 +83,7 @@
         }
 
         function deleteRide(rideId) {
-            const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+            const token = localStorage.getItem('token');
 
             axios.delete(`http://localhost:3001/api/rides/${rideId}`, {
                 headers: {
@@ -76,7 +92,6 @@
             })
             .then(function (response) {
                 console.log('Ride deleted successfully');
-                // Actualizar la lista de rides después de eliminar
                 fetchRidesDriver();
             })
             .catch(function (error) {
@@ -89,14 +104,14 @@
         }
 
         function viewDetails(rideId) {
-            window.location.href = `ViewRideDetails.html?id=${rideId}`; // Cambiar el nombre de la página según corresponda
+            window.location.href = `ViewRideDetails.html?id=${rideId}`;
         }
 
         function logout() {
             localStorage.removeItem('userType');
             localStorage.removeItem('userId');
             localStorage.removeItem('token');
-            window.location.href = 'index.html'; // Redirigir al inicio después del logout
+            window.location.href = 'index.html';
         }
 
         window.onload = function() {
