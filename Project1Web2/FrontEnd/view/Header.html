@@ -1,0 +1,80 @@
+<!-- header.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventones Header</title>
+    <!-- Bootstrap CSS y otros estilos si es necesario -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Estilos adicionales -->
+    <style>
+        .header {
+            background-color: #f8f9fa; /* Color de fondo del header */
+            padding: 10px 0;
+        }
+
+        
+
+        .header h2 {
+            font-size: 32px; /* Tamaño del nombre "Aventones" */
+            font-weight: bold; /* Letra más gruesa */
+            margin-bottom: 0; /* Eliminar margen inferior */
+        }
+
+        .header a {
+            font-size: 18px; /* Tamaño de los enlaces Home, Rides, Booking */
+            font-weight: bold; /* Letra más gruesa */
+            text-decoration: none !important; /* Eliminar subrayado */
+            color: #343a40; /* Color de texto por defecto */
+            margin-right: 20px; /* Espaciado entre enlaces */
+        }
+
+        .header a:hover {
+            color: #343a40; /* Color de texto al pasar el mouse */
+        }
+
+        .active-link {
+            background-color: #007bff; /* Color de fondo del enlace activo */
+            color: #fff !important; /* Color de texto del enlace activo */
+            padding: 5px 10px; /* Espaciado interno del enlace activo */
+            border-radius: 5px; /* Bordes redondeados */
+        }
+
+        .header .navigation {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .user-icon {
+            font-size: 35px; /* Tamaño del icono de usuario */
+            color: #343a40; /* Color del icono de usuario */
+            margin-top: 20px;
+        }
+        .float-left{
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            
+            <h2 class="text-center">Aventones <i class="fa fa-car"></i></h2>
+            
+            <div class="float-left">
+                <a href="#" class="mr-3">Home</a>
+                <a href="#" class="mr-3">Rides</a>
+                <a href="#">Booking</a>
+            </div>
+            <div class="float-right">
+                <i class="fa fa-user-circle-o fa-lg"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y otros scripts si es necesario -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

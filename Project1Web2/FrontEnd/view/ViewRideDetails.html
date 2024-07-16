@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style/style.css"> <!-- Ruta ajustada para style.css -->
+</head>
+<body>
+    <iframe src="header.html" frameborder="0" style="width: 100%; height: 100px;"></iframe>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Ride Details</h1>
+            <div>
+                <button class="btn btn-primary" onclick="goBack()">Back</button>
+            </div>
+        </div>
+        <form id="rideDetailsForm">
+            <div class="form-group">
+                <label for="departureFrom">Departure From</label>
+                <input type="text" id="departureFrom" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="arriveTo">Arrive To</label>
+                <input type="text" id="arriveTo" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label>Días</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="mondayCheckbox" value="Monday" disabled>
+                    <label class="form-check-label" for="mondayCheckbox">Monday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tuesdayCheckbox" value="Tuesday" disabled>
+                    <label class="form-check-label" for="tuesdayCheckbox">Tuesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="wednesdayCheckbox" value="Wednesday" disabled>
+                    <label class="form-check-label" for="wednesdayCheckbox">Wednesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="thursdayCheckbox" value="Thursday" disabled>
+                    <label class="form-check-label" for="thursdayCheckbox">Thursday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fridayCheckbox" value="Friday" disabled>
+                    <label class="form-check-label" for="fridayCheckbox">Friday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="saturdayCheckbox" value="Saturday" disabled>
+                    <label class="form-check-label" for="saturdayCheckbox">Saturday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="sundayCheckbox" value="Sunday" disabled>
+                    <label class="form-check-label" for="sundayCheckbox">Sunday</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="text" id="time" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="seats">Seats</label>
+                <input type="number" id="seats" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="fee">Fee</label>
+                <input type="number" id="fee" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="make">Make</label>
+                <input type="text" id="make" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" id="model" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" id="year" class="form-control" disabled>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const rideId = urlParams.get('id');
+
+        function loadRideDetails() {
+            axios.get(`http://localhost:3001/api/rides/${rideId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(function(response) {
+                const ride = response.data;
+                console.log('Ride details:', ride);
+
+                // Llenar los campos del formulario con los detalles del ride
+                document.getElementById('departureFrom').value = ride.departureFrom;
+                document.getElementById('arriveTo').value = ride.arriveTo;
+                document.getElementById('time').value = ride.time;
+                document.getElementById('seats').value = ride.seats;
+                document.getElementById('fee').value = ride.fee;
+                document.getElementById('make').value = ride.vehicle.make;
+                document.getElementById('model').value = ride.vehicle.model;
+                document.getElementById('year').value = ride.vehicle.year;
+
+                // Marcar los checkboxes de días según los datos del ride
+                ride.days.forEach(day => {
+                    document.getElementById(`${day.toLowerCase()}Checkbox`).checked = true;
+                });
+            })
+            .catch(function(error) {
+                console.error('Error loading ride details:', error);
+            });
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        window.onload = loadRideDetails;
+    </script>
+</body>
+</html>
