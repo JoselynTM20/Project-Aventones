@@ -14,7 +14,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>User</th>
+                        <th>Driver</th>
                         <th>Ride</th>
                         <th>Accept / Reject</th>
                     </tr>
@@ -53,7 +53,7 @@
                 bookings.forEach(booking => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${booking.userId}</td>
+                        <td>${booking.UserId}</td>
                         <td>${booking.rideId}</td>
                         <td>
                             <a href="#" class="accept-link" data-id="${booking._id}">Accept</a> |
