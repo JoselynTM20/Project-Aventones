@@ -27,7 +27,7 @@
             const userId = localStorage.getItem('userId'); // Obtener el userId del almacenamiento local
             const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
             
-            axios.get(`http://localhost:3001/api/rides?UserId=${userId}`, {
+            axios.get(`http://localhost:3001/api/rides?userId=${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -50,7 +50,6 @@
                             <li>Year: ${ride.vehicle.year}</li>
                         </ul>
                         <p>Fee: ${ride.fee}</p>
-                         
                         <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
                         <button class="btn btn-primary" onclick="editRide('${ride._id}')">Edit</button>
                     `;
@@ -82,6 +81,7 @@
 
         function editRide(rideId) {
             window.location.href = `EditRidesDriver.html?id=${rideId}`;
+            console.log({rideId});
         }
 
         function logout() {
