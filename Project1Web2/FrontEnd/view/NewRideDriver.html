@@ -21,6 +21,7 @@
             </div>
             <div class="float-right">
                 <i class="fa fa-user-circle-o fa-lg"></i>
+                <i class="fa fa-sign-out" onclick="logout()"></i>
             </div>
         </div>
     </div>
@@ -98,7 +99,7 @@
             Error creating ride. Please try again.
         </div>
     </div>
-
+    <script src="../js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.getElementById('newRideForm').addEventListener('submit', function(e) {
