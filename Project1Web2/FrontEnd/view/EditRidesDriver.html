@@ -1,3 +1,4 @@
+<!-- EditRidesDriver.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +60,7 @@
         const rideId = urlParams.get('id');
 
         // Cargar datos del ride para prellenar el formulario de edición
-        function  loadRideData() {
+        function loadRideData() {
             axios.get(`http://localhost:3001/api/rides/${rideId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -101,9 +102,11 @@
                 time,
                 seats: parseInt(seats),
                 fee: parseFloat(fee),
-                make,
-                model,
-                year
+                vehicle: {
+                    make,
+                    model,
+                    year
+                }
             };
 
             // Enviar la solicitud PUT para actualizar el ride

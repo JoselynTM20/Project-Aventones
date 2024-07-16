@@ -10,7 +10,7 @@ const { login } = require('./BackEend/controllers/authControllers');
 
 const { UserGet, UserPost } = require('./BackEend/controllers/usersControllers');
 const { DriverPost, DriverGet } = require('./BackEend/controllers/driversControllers');
-const { RidesDriverPost, RidesDriverGet, updateRide, deleteRide } = require('./BackEend/controllers/ridesControllers');
+const { RidesDriverPost, RidesDriverGet, updateRideDriver, deleteRide, getRidesByDriver } = require('./BackEend/controllers/ridesControllers');
 const { BookingPost, BookingGet, UpdateBooking, DeleteBooking } = require('./BackEend/controllers/BookingsControllers');
 
 app.use(bodyParser.json());
@@ -21,15 +21,15 @@ app.use(cors({
 
 // Para la conexión a la base de datos
 
-mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-/*mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net", {
+/*mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })*/
+
+mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net/users", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
 
@@ -42,12 +42,15 @@ app.get('/api/user', UserGet);
 app.post('/api/user' , UserPost);
 
 app.get('/api/driver', authenticateToken, DriverGet);
-app.post('/api/driver', authenticateToken, DriverPost);
+app.post('/api/driver', DriverPost);
 
 app.get('/api/rides', authenticateToken, RidesDriverGet);
 app.post('/api/rides', authenticateToken, RidesDriverPost);
-app.put('/api/rides/:id', authenticateToken, updateRide);
+app.put('/api/rides/:id', authenticateToken, updateRideDriver);
 app.delete('/api/rides/:id', authenticateToken, deleteRide);
+app.delete('/api/rides/:id', authenticateToken, getRidesByDriver);
+
+
 
 app.get('/api/bookings', authenticateToken, BookingGet);
 app.post('/api/bookings', authenticateToken, BookingPost);
