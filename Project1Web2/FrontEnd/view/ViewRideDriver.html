@@ -8,24 +8,19 @@
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="../style/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- 
-
-    
 </head>
 <body>
     <div class="header">
         <div class="container">
             <h2 class="text-center">Aventones <i class="fa fa-car"></i></h2>
             <div class="float-left">
-                
                 <a href="ViewRideDriver.html" class="mr-3">Rides</a>
                 <a href="bookings.html">Booking</a>
             </div>
             <div class="float-right">
-                <i class="fa fa-user-circle-o fa-lg" ></i>
+                <i class="fa fa-user-circle-o fa-lg"></i>
                 <i class="fa fa-sign-out" onclick="logout()"></i>
             </div>
-            
         </div>
     </div>
 
@@ -34,10 +29,27 @@
             <h1>Rides</h1>
             <div>
                 <button class="btn btn-success mr-2" onclick="window.location.href='NewRideDriver.html'">New Ride</button>
-                
             </div>
         </div>
-        <div id="ridesDriver" class="mb-4"></div>
+        <div id="ridesDriver" class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Seats</th>
+                        <th>Vehicle Make</th>
+                        <th>Vehicle Model</th>
+                        <th>Vehicle Year</th>
+                        <th>Fee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ridesDriverTable">
+                    <!-- Los rides se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
     </div>
     <script src="../js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -48,7 +60,7 @@
         function fetchRidesDriver() {
             const userId = localStorage.getItem('userId');
             const token = localStorage.getItem('token');
-            
+
             axios.get(`http://localhost:3001/api/rides?userId=${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -56,27 +68,27 @@
             })
             .then(function (response) {
                 const rides = response.data;
-                const lista = document.getElementById('ridesDriver');
-                lista.innerHTML = '';
+                const ridesTable = document.getElementById('ridesDriverTable');
+                ridesTable.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
                 rides.forEach(ride => {
-                    const item = document.createElement('div');
-                    item.className = 'alert alert-secondary';
-                    item.innerHTML = `
-                        <p>From: ${ride.departureFrom}</p>
-                        <p>To: ${ride.arriveTo}</p>
-                        <p>Seats: ${ride.seats}</p>
-                        <p>Vehicle:</p>
-                        <ul>
-                            <li>Make: ${ride.vehicle.make}</li>
-                            <li>Model: ${ride.vehicle.model}</li>
-                            <li>Year: ${ride.vehicle.year}</li>
-                        </ul>
-                        <p>Fee: ${ride.fee}</p>
-                        <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">Delete</button>
-                        <button class="btn btn-primary" onclick="editRide('${ride._id}')">Edit</button>
-                        <button class="btn btn-info" onclick="viewDetails('${ride._id}')">Details</button>
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${ride.departureFrom}</td>
+                        <td>${ride.arriveTo}</td>
+                        <td>${ride.seats}</td>
+                        <td>${ride.vehicle.make}</td>
+                        <td>${ride.vehicle.model}</td>
+                        <td>${ride.vehicle.year}</td>
+                        <td>${ride.fee}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRide('${ride._id}')">Delete</button>
+                            <button class="btn btn-primary btn-sm" onclick="editRide('${ride._id}')">Edit</button>
+                            <button class="btn btn-info btn-sm" onclick="viewDetails('${ride._id}')">Details</button>
+                        </td>
                     `;
-                    lista.appendChild(item);
+                    ridesTable.appendChild(row);
                 });
             })
             .catch(function (error) {
@@ -109,7 +121,6 @@
             window.location.href = `ViewRideDetails.html?id=${rideId}`;
         }
 
-       
         window.onload = function() {
             fetchRidesDriver();
         };

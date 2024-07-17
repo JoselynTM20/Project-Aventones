@@ -8,16 +8,14 @@
     <link rel="stylesheet" href="../style/header.css">
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 <body>
     <div class="header">
         <div class="container">
             <h2 class="text-center">Aventones <i class="fa fa-car"></i></h2>
             <div class="float-left">
-                
-                <a href="ViewRideDriver.html" class="mr-3">Rides</a>
-                <a href="bookings.html">Booking</a>
+                <a href="SearchRides.html" class="mr-3">Search Rides</a>
+                <a href="bookings.html">Bookings</a>
             </div>
             <div class="float-right">
                 <i class="fa fa-user-circle-o fa-lg"></i>
@@ -27,6 +25,11 @@
     </div>
     <div class="container mt-5">
         <h1 class="mb-4">Bookings</h1>
+        <div class="d-flex justify-content-between mb-4 align-items-center">
+            <div>
+                <button class="btn btn-secondary" onclick="goBack()">Back</button>
+            </div>
+        </div>
         <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
         <div id="bookings-container">
             <table class="table table-striped">
@@ -45,10 +48,6 @@
     </div>
     <script src="../js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const token = localStorage.getItem('token'); // Obtener token JWT
@@ -69,30 +68,28 @@
                 bookingsTable.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
                 bookings.forEach(booking => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${booking.UserId}</td>
-                        <td>${booking.rideId}</td>
-                        <td>
-                            <a href="#" class="accept-link" data-id="${booking._id}">Accept</a> |
-                            <a href="#" class="reject-link" data-id="${booking._id}">Reject</a>
-                        </td>
-                    `;
-                    bookingsTable.appendChild(row);
-                });
-
-                // Agregar manejadores de eventos para aceptar/rechazar reservas
-                document.querySelectorAll('.accept-link').forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        updateBookingStatus(event.target.dataset.id, 'accepted');
-                    });
-                });
-
-                document.querySelectorAll('.reject-link').forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        updateBookingStatus(event.target.dataset.id, 'rejected');
+                    // Obtener detalles del viaje (departureFrom y arriveTo)
+                    axios.get(`http://localhost:3001/api/rides/${booking.rideId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    .then(function (rideResponse) {
+                        const ride = rideResponse.data;
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${ride._id}</td>
+                            <td>${ride.departureFrom} - ${ride.arriveTo}</td>
+                            <td>
+                                <a href="#" class="accept-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'accepted')">Accept</a> |
+                                <a href="#" class="reject-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'rejected')">Reject</a>
+                            </td>
+                        `;
+                        bookingsTable.appendChild(row);
+                    })
+                    .catch(function (error) {
+                        console.error('Error fetching ride details:', error);
                     });
                 });
             })
@@ -104,7 +101,8 @@
             });
         });
 
-        function updateBookingStatus(bookingId, status) {
+        function updateBookingStatus(event, bookingId, status) {
+            event.preventDefault();
             const token = localStorage.getItem('token');
 
             axios.patch(`http://localhost:3001/api/bookings/${bookingId}`, {
@@ -115,14 +113,23 @@
                 }
             })
             .then(function (response) {
-                location.reload(); // Recargar la página después de actualizar el estado
+                window.location.href = 'SearchRides.html'; // Redirigir a SearchRides.html después de actualizar el estado
             })
             .catch(function (error) {
                 const errorMessage = document.getElementById('error-message');
-                errorMessage.textContent = `Error updating booking. Please try again later.`;
+                errorMessage.textContent = 'Error updating booking. Please try again later.';
                 errorMessage.classList.remove('d-none');
                 console.error('Error updating booking:', error);
             });
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
         }
     </script>
 </body>

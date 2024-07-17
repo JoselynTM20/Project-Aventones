@@ -48,13 +48,13 @@ app.get('/api/rides', authenticateToken, RidesDriverGet);
 app.post('/api/rides', authenticateToken, RidesDriverPost);
 app.put('/api/rides/:id', authenticateToken, updateRideDriver);
 app.delete('/api/rides/:id', authenticateToken, deleteRide);
-app.delete('/api/rides/driver/:id', authenticateToken, getRidesByDriver);
+app.delete('/api/rides/:id', authenticateToken, getRidesByDriver);
 app.get('/api/rides/:id', authenticateToken, RidesDriverGetById);
 
 
 app.get('/api/bookings', authenticateToken, BookingGet);
 app.post('/api/bookings', authenticateToken, BookingPost);
-app.put('/api/bookings/:id', authenticateToken, UpdateBooking);
+app.patch('/api/bookings/:id', authenticateToken, UpdateBooking);
 app.delete('/api/bookings/:id', authenticateToken, DeleteBooking);
 
 // Iniciar el servidor
