@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+import { ApolloProvider } from '@apollo/client';
+import client from './GraphQL/Config/ApolloClient';  // Importa el archivo de configuración
 
 // Importar middleware de autenticación
 const { authenticateToken } = require('./BackEend/middleware/authMiddleware');
