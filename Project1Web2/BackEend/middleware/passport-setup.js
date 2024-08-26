@@ -1,25 +1,22 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../models/User'); // Reemplaza con el modelo de usuario adecuado
+const User = require('../models/UsersModel'); // Reemplaza con tu modelo de usuario
 
 passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
+    clientID: '485381445112-4bsedqg2hn68ju8bgtf2goluuau3a3dh.apps.googleusercontent.com',
+    clientSecret: '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',
+    callbackURL: 'http://localhost:3001/api/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
-      // Verifica si el usuario ya existe en tu base de datos
       let user = await User.findOne({ googleId: profile.id });
 
       if (!user) {
-        // Si no existe, crea un nuevo usuario en la base de datos
         user = new User({
           googleId: profile.id,
           firstName: profile.name.givenName,
           Lastname: profile.name.familyName,
           email: profile.emails[0].value
-          
         });
         await user.save();
       }
@@ -35,8 +32,11 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
 });
