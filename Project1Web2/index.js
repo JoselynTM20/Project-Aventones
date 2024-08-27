@@ -61,17 +61,17 @@ app.use(cors({
 
 // Para la conexión a la base de datos
 
-mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
+/*mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
+    .catch(err => console.log('MongoDB connection error:', err));*/
 
-/*mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net/users", {
+mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net/users", {
 })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));*/
+    .catch(err => console.log('MongoDB connection error:', err));
 
 
 
