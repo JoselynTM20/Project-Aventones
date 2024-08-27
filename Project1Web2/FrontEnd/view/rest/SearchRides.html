@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="../style/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <style>
         body {
             background-color: #f8f9fa;
@@ -35,6 +34,9 @@
         }
         #map {
             margin-top: 2rem;
+            height: 500px;
+            width: 100%;
+            border: 1px solid #ddd;
         }
         .form-check-label {
             margin-right: 1rem;
@@ -130,7 +132,7 @@
                 </tbody>
             </table>
         </div>
-        <div id="map" style="height: 400px;"></div>
+        <div id="map"></div>
     </div>
     <script src="../js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -147,7 +149,6 @@
                 }
             });
 
-            // Obtener el token del localStorage
             const token = localStorage.getItem('token');
 
             axios.get('http://localhost:3001/api/rides', {
@@ -159,7 +160,7 @@
             .then(function(response) {
                 const rides = response.data;
                 const ridesTableBody = document.getElementById('ridesTableBody');
-                ridesTableBody.innerHTML = ''; // Limpiar la tabla
+                ridesTableBody.innerHTML = '';
 
                 rides.forEach(ride => {
                     const row = `
@@ -178,6 +179,10 @@
 
                 document.getElementById('fromLocation').textContent = departureFrom;
                 document.getElementById('toLocation').textContent = arriveTo;
+
+                // Clear existing markers and add new ones
+                clearMarkers();
+                addMarkersToMap(rides);
             })
             .catch(function(error) {
                 console.log('Error fetching rides:', error);
@@ -185,7 +190,6 @@
         });
 
         function requestRide(rideId) {
-            // Lógica para solicitar un ride
             const userId = localStorage.getItem('userId');
             const token = localStorage.getItem('token');
 
@@ -201,6 +205,36 @@
                 console.log('Error requesting ride:', error);
             });
         }
+
+        // Map initialization
+        var map;
+        var markers = [];
+
+        function initMap() {
+            var coord = { lat: -34.5956145, lng: -58.4431949 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: coord
+            });
+        }
+
+        function addMarkersToMap(rides) {
+            rides.forEach(ride => {
+                const position = { lat: ride.latitude, lng: ride.longitude };
+                const marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: `Ride from ${ride.departureFrom} to ${ride.arriveTo}`
+                });
+                markers.push(marker);
+            });
+        }
+
+        function clearMarkers() {
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+        }
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDaeWicvigtP9xPv919E-RNoxfvC-Hqik&callback=initMap" async defer></script>
 </body>
 </html>

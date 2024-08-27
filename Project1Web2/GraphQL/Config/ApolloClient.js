@@ -1,24 +1,23 @@
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers } = require('./GraphQL/schema'); // Define tu esquema y resolvers de GraphQL
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-// Crear una instancia de Apollo Server
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }) => {
-        // Aquí podrías manejar la autenticación si fuera necesario
-        const token = req.headers.authorization || '';
-        // Validar el token si es necesario y retornar contexto
-        return { token };
-    },
+const httpLink = createHttpLink({
+    uri: 'http://localhost:3001/graphql', // Asegúrate de que esta dirección sea correcta
 });
 
-// Aplicar Apollo Server como middleware de Express
-server.start().then(res => {
-    server.applyMiddleware({ app });
-    console.log(`🚀 Servidor GraphQL listo en http://localhost:${port}${server.graphqlPath}`);
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
+        },
+    };
 });
 
-// Iniciar el servidor Express
-const port = 3001;
-app.listen(port, () => console.log(`Servidor REST y GraphQL escuchando en puerto ${port}!`));
+const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+});
+
+export default client;
