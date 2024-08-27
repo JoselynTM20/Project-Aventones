@@ -18,6 +18,9 @@ UserSchema.methods.isValidPassword = async function(password) {
     return compare;
 };
 
+// Verificar si el modelo ya existe antes de crearlo
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
 module.exports = mongoose.model('User', UserSchema);
 
 
