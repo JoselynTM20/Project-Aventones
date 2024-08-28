@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../models/UsersModel');
+const User = require('../models/UsersModel'); // Reemplaza con tu modelo de usuario
 
 passport.use(new GoogleStrategy({
     clientID: '485381445112-4bsedqg2hn68ju8bgtf2goluuau3a3dh.apps.googleusercontent.com',
@@ -37,7 +37,6 @@ passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id);
     done(null, user);
   } catch (err) {
-    done(err, null);
-  }
+    done(err, null);
+  }
 });
-

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookings</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../style/header.css">
-    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../../style/header.css">
+    <link rel="stylesheet" href="../../style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -47,53 +47,49 @@
         </div>
     </div>
     <script src="../js/common.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@apollo/client/core@3.7.3/apollo-client.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/graphql@15.5.0/graphql.min.js"></script>
+    <script src="../../../GraphQL/Config/ApolloClient.js"></script> <>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('token'); // Obtener token JWT
-
-            if (!token) {
-                window.location.href = 'login.html'; // Redirigir al login si no está autenticado
-                return;
-            }
-
-            axios.get('http://localhost:3001/api/bookings', {
-                headers: {
-                    'Authorization': `Bearer ${token}` // Incluir token JWT en el header
+            const GET_BOOKINGS_QUERY = `
+                query {
+                    getBookings {
+                        _id
+                        userId {
+                            firstName
+                        }
+                        rideId {
+                            departureFrom
+                            arriveTo
+                        }
+                    }
                 }
+            `;
+
+            client.query({
+                query: gql(GET_BOOKINGS_QUERY)
             })
-            .then(function (response) {
-                const bookings = response.data;
+            .then(response => {
+                const bookings = response.data.getBookings;
                 const bookingsTable = document.getElementById('bookings-table');
                 bookingsTable.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
                 bookings.forEach(booking => {
-                    // Obtener detalles del viaje (departureFrom y arriveTo)
-                    axios.get(`http://localhost:3001/api/rides/${booking.rideId}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                    .then(function (rideResponse) {
-                        const ride = rideResponse.data;
-                        const row = document.createElement('tr');
-                        
-                        row.innerHTML = `
-                            <td>${ride._id}</td>
-                            <td>${ride.departureFrom} - ${ride.arriveTo}</td>
-                            <td>
-                                <a href="#" class="accept-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'accepted')">Accept</a> |
-                                <a href="#" class="reject-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'rejected')">Reject</a>
-                            </td>
-                        `;
-                        bookingsTable.appendChild(row);
-                    })
-                    .catch(function (error) {
-                        console.error('Error fetching ride details:', error);
-                    });
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${booking.userId.firstName}</td>
+                        <td>${booking.rideId.departureFrom} - ${booking.rideId.arriveTo}</td>
+                        <td>
+                            <a href="#" class="accept-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'accepted')">Accept</a> |
+                            <a href="#" class="reject-link" data-id="${booking._id}" onclick="updateBookingStatus(event, '${booking._id}', 'rejected')">Reject</a>
+                        </td>
+                    `;
+                    bookingsTable.appendChild(row);
                 });
             })
-            .catch(function (error) {
+            .catch(error => {
                 const errorMessage = document.getElementById('error-message');
                 errorMessage.textContent = 'Error fetching bookings. Please try again later.';
                 errorMessage.classList.remove('d-none');
@@ -103,24 +99,7 @@
 
         function updateBookingStatus(event, bookingId, status) {
             event.preventDefault();
-            const token = localStorage.getItem('token');
-
-            axios.patch(`http://localhost:3001/api/bookings/${bookingId}`, {
-                status: status
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function (response) {
-                window.location.href = 'SearchRides.html'; // Redirigir a SearchRides.html después de actualizar el estado
-            })
-            .catch(function (error) {
-                const errorMessage = document.getElementById('error-message');
-                errorMessage.textContent = 'Error updating booking. Please try again later.';
-                errorMessage.classList.remove('d-none');
-                console.error('Error updating booking:', error);
-            });
+            // Implementa la lógica para actualizar el estado de la reserva aquí
         }
 
         function goBack() {

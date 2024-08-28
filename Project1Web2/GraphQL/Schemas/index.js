@@ -6,7 +6,7 @@ const userTypeDefs = gql`
   type User {
     id: ID!
     firstName: String!
-    lastName: String!
+    Lastname: String!
     email: String!
     password: String!
     cardIdNumber: String

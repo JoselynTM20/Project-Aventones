@@ -8,9 +8,18 @@ function createApolloServer() {
         resolvers,
         context: ({ req }) => {
             const token = req.headers.authorization || '';
-            // Validar el token y retornar contexto si es necesario
-            return { token };
-        },
+            let user = null;
+    
+            if (token) {
+                try {
+                    user = jwt.verify(token.replace('Bearer ', ''), process.env.ACCESS_TOKEN_SECRET);
+                } catch (err) {
+                    // Token inválido
+                }
+            }
+    
+            return { user };
+        }
     });
 }
 

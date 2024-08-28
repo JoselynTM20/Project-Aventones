@@ -1,6 +1,16 @@
 // ridesControllers.js
 const RidesDriver = require('../models/RidesDriversModel.js');
 
+const rideValidationRules = () => [
+    body('departureFrom').isString().isLength({ min: 3 }).withMessage('Departure From must be at least 3 characters long'),
+    body('arriveTo').isString().isLength({ min: 3 }).withMessage('Arrive To must be at least 3 characters long'),
+    body('days').isArray().withMessage('Days must be an array'),
+    body('time').isString().optional(),
+    body('seats').isInt({ min: 1 }).withMessage('Seats must be a positive integer'),
+    body('fee').isDecimal().withMessage('Fee must be a decimal'),
+    body('vehicle').isString().optional(),
+];
+
 const RidesDriverPost = async (req, res) => {
     try {
         const { departureFrom, arriveTo, days, time, seats, fee, vehicle, userId } = req.body;

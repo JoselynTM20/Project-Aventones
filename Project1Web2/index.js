@@ -5,17 +5,17 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ApolloServer } = require('apollo-server-express'); // Importar ApolloServer de apollo-server-express
-
+const authRoutes = require('./BackEend/routes/authRoutes');
 require('./BackEend/middleware/passport-setup');
 
 // Crear aplicación Express
 const app = express();
 
-// Configuración de middlewares
+// Middleware
 app.use(bodyParser.json());
 app.use(cors({
     origin: '*',
-    methods: '*',
+    methods: '*'
 }));
 
 app.use(session({
@@ -25,16 +25,15 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// Inicialización de Passport (asegúrate de que session esté configurado antes)
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Conexión a la base de datos
-mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net/users", {})
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
 
-// Importar rutas y controladores
-const authRoutes = require('./BackEend/routes/authRoutes');
+// Usa las rutas de autenticación
+app.use('/api', authRoutes);
+
+// Importar middleware de autenticación
 const { authenticateToken } = require('./BackEend/middleware/authMiddleware');
 const { login } = require('./BackEend/controllers/authControllers');
 
@@ -48,17 +47,11 @@ const { BookingPost, BookingGet, UpdateBooking, DeleteBooking } = require('./Bac
 const typeDefs = require('./GraphQL/Schemas/index');
 const resolvers = require('./GraphQL/Resolvers/index');
 
+// Crear aplicación Express
 
-
-// Middleware
-app.use(bodyParser.json());
-app.use(cors({
-    origin: '*',
-    methods: '*'
-}));
 
 // Conexión a la base de datos MongoDB
-/*mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
+mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

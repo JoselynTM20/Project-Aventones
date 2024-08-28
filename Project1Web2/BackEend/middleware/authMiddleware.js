@@ -8,18 +8,18 @@ const authenticateToken = (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ error: 'Token is missing' });
+        throw new Error('Token is missing');
     }
 
-    jwt.verify(token, 'sientre', (err, user) => {
-        if (err) {
-            return res.status(403).json({ error: 'Invalid or expired token' });
-        }
-        req.user = user;
-        next();
-    });
+    try {
+        const user = jwt.verify(token, 'sientre'); // 'sientre' debería ser tu clave secreta
+        return user;
+    } catch (err) {
+        throw new Error('Invalid or expired token');
+    }
 };
 
 module.exports = { authenticateToken };
 
-module.exports = { authenticateToken };
+
+
