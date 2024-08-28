@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User } = require('./models/User'); // Asegúrate de ajustar la ruta según tu estructura
+const { User } = require('./models/User'); 
 const sendgrid = require('@sendgrid/mail');
 const twilio = require('twilio');
 const uuid = require('uuid').v4;
 
 // Configura SendGrid y Twilio
-sendgrid.setApiKey('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');
+//sendgrid.setApiKey('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');
 
-const accountSid = 'AC8640541fe01e6d087cdc9f3a8d5a9ca0';
-const authToken = '1ef72e59deb6b4647d23eca3ac246a95';
-const twilioClient = new twilio(accountSid, authToken);
+//const accountSid = 'AC8640541fe01e6d087cdc9f3a8d5a9ca0';
+//const authToken = '1ef72e59deb6b4647d23eca3ac246a95';
+//const twilioClient = new twilio(accountSid, authToken);
 
 exports.registerUser = async (req, res) => {
     try {
