@@ -8,8 +8,8 @@ const { ApolloServer } = require('apollo-server-express'); // Importar ApolloSer
 
 require('./BackEend/middleware/passport-setup');
 
-// Configura Express para servir archivos estáticos desde la carpeta 'views'
-app.use(express.static(path.join(__dirname, 'views')));
+// Crear aplicación Express
+const app = express();
 
 // Configuración de middlewares
 app.use(bodyParser.json());
@@ -48,8 +48,7 @@ const { BookingPost, BookingGet, UpdateBooking, DeleteBooking } = require('./Bac
 const typeDefs = require('./GraphQL/Schemas/index');
 const resolvers = require('./GraphQL/Resolvers/index');
 
-// Crear aplicación Express
-const app = express();
+
 
 // Middleware
 app.use(bodyParser.json());
@@ -64,7 +63,7 @@ mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/user
     useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));*/
+    .catch(err => console.log('MongoDB connection error:', err));
 
 // Función para crear el servidor Apollo
 function createApolloServer() {
