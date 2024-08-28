@@ -58,7 +58,7 @@ app.use(cors({
 }));
 
 // Conexión a la base de datos MongoDB
-mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
+/*mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/users", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -105,17 +105,17 @@ async function startServers() {
     // Iniciar el servidor REST
     const restPort = 3001;
     app.listen(restPort, () => {
-        console.log(`🚀 Servidor REST escuchando en http://localhost:${restPort}`);
+        console.log('🚀 Servidor REST escuchando en http://localhost:${restPort}');
     });
 
     // Iniciar el servidor de GraphQL en un puerto diferente
     const graphqlPort = 4000;
     app.listen(graphqlPort, () => {
-        console.log(`🚀 Servidor GraphQL escuchando en http://localhost:${graphqlPort}${apolloServer.graphqlPath}`);
+        console.log('🚀 Servidor GraphQL escuchando en http://localhost:${graphqlPort}${apolloServer.graphqlPath}');
     });
 }
 
 // Iniciar ambos servidores
 startServers().catch(err => {
-    console.error('Error al iniciar los servidores:', err);
+    console.error('Error al iniciar los servidores:', err);
 });
