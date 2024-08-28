@@ -1,10 +1,40 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ApolloServer } = require('apollo-server-express'); // Importar ApolloServer de apollo-server-express
 
-// Importar middleware de autenticación
+require('./BackEend/middleware/passport-setup');
+
+// Configura Express para servir archivos estáticos desde la carpeta 'views'
+app.use(express.static(path.join(__dirname, 'views')));
+
+// Configuración de middlewares
+app.use(bodyParser.json());
+app.use(cors({
+    origin: '*',
+    methods: '*',
+}));
+
+app.use(session({
+    secret: 'sientre',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Conexión a la base de datos
+mongoose.connect("mongodb+srv://JoselynTijerino:JoselynTijerino@cluster0.6sdzi3m.mongodb.net/users", {})
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log('MongoDB connection error:', err));
+
+// Importar rutas y controladores
+const authRoutes = require('./BackEend/routes/authRoutes');
 const { authenticateToken } = require('./BackEend/middleware/authMiddleware');
 const { login } = require('./BackEend/controllers/authControllers');
 
@@ -34,7 +64,7 @@ mongoose.connect("mongodb+srv://lingama04:1234@cluster0.qlrltgq.mongodb.net/user
     useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
+    .catch(err => console.log('MongoDB connection error:', err));*/
 
 // Función para crear el servidor Apollo
 function createApolloServer() {
